@@ -1,0 +1,44 @@
+*, 
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0; 
+    padding: 0;
+}
+
+:root {
+    --header-color: #ef8a85;
+    --body-color: #4c8ec2;
+    --footer-color: #ef8a85; 
+    --text-color: #091013;
+}
+
+
+header {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+    background-color: var(--header-color);
+    color: var(--text-color);
+}
+
+body {
+    background-color: var(--body-color);
+}
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    background-color: var(--footer-color);
+    color: var(--text-color);
+}
+
