@@ -11,6 +11,7 @@
     --body-color: #4c8ec2;
     --footer-color: #ef8a85; 
     --text-color: #091013;
+    --board-color: #ffe4ec;
 }
 
 
@@ -20,10 +21,15 @@ header {
     padding: 40px 0px;
     background-color: var(--header-color);
     color: var(--text-color);
+    width: 100%;
 }
 
 body {
     background-color: var(--body-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -40,5 +46,21 @@ footer {
     font-size: 20px;
     background-color: var(--footer-color);
     color: var(--text-color);
+}
+
+
+.game-board {
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+    margin-top: 70px;
+    background-color: var(--board-color);
+    padding: 20px;
+}
+
+
+.tile {
+    border: 1px solid black;
+    padding: 7px;
 }
 
