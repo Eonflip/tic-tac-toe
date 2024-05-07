@@ -8,10 +8,10 @@
 
 :root {
     --header-color: #ef8a85;
-    --body-color: #4c8ec2;
+    --body-color: #a3c7e3;
     --footer-color: #ef8a85; 
     --text-color: #091013;
-    --board-color: #ffe4ec;
+    --board-color: #dcd9d9;
 }
 
 
@@ -51,17 +51,16 @@ footer {
 
 .game-board {
     display: grid;
-    grid-template-columns: 100px 100px 100px;
-    grid-template-rows: 100px 100px 100px;
-    margin-top: 70px;
-    background-color: var(--board-color);
-    padding: 20px;
+    grid-template-columns: repeat(3, 125px);
+    grid-template-rows: repeat(3, 125px);
+    margin-top: 90px;
 }
 
 
 .tile {
     border: 1px solid black;
-    padding: 7px;
+    padding: 60px;
+
 }
 
 
@@ -83,7 +82,11 @@ footer {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 30%;
+    height: 30%;
+    text-align: center;
+    font-size: 32px;
+    border-radius: 5px;
 }
 
 .close {
@@ -100,3 +103,48 @@ footer {
     cursor: pointer;
 }
 
+
+.player-buttons {
+    margin-top: 40px;
+    margin-left: -10px;
+    padding: 10px;
+}
+
+#computerButton, #secondPlayer {
+    font-size: 24px;
+    padding: 10px;
+}
+
+#computerButton {
+    background-color: rgb(243, 165, 165);
+}
+
+#secondPlayer {
+    background-color: rgb(197, 232, 244);
+}
+
+.restart-button {
+    margin: 20px;
+    padding: 8px;
+}
+
+
+.tile:first-child,
+.tile:nth-child(2),
+.tile:nth-child(3) {
+    border-top: none;
+}
+
+.tile:nth-child(3n + 1) {
+    border-left: none;
+}
+
+.tile:nth-child(3n + 3) {
+    border-right: none;
+}
+
+.tile:last-child,
+.tile:nth-child(8),
+.tile:nth-child(7) {
+    border-bottom: none;
+}
