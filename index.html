@@ -12,33 +12,41 @@
         <h1>Tic-Tac-Toe</h1>
     </header>
 
-    <body>
 
-        <div class="modal" id="myModal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <p>Select Opponent</p>
-                <div class="player-buttons">
-                    <button id="computerButton">Computer</button>
-                    <button id="secondPlayer">2nd Player</button>
-                </div>
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Select Opponent</p>
+            <div class="player-buttons">
+                <button id="computerButton">Computer</button>
+                <button id="secondPlayer">2nd Player</button>
             </div>
         </div>
+    </div>
 
-        <div class="game-board">
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
+    <div class="symbol-modal" id="symbolModal">
+        <div class="symbol-modal-content">
+            <p>Select Your Symbol</p>
+            <div class="player-symbols">
+                <button id="xButton">X</button>
+                <button id="oButton">O</button>
+            </div>
         </div>
-        <button class="restart-button">Restart</button>
+    </div>
 
-    </body>
+    <div class="game-board">
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+    </div>
+    <button class="restart-button">Restart</button>
+
 
     <footer>
         <p>Copyright © Ian Jones <script>document.write(new Date().getFullYear())</script></p>
