@@ -1,5 +1,6 @@
 let modal = document.getElementById("myModal");
 let span = document.getElementsByClassName("close")[0];
+let spanOne = document.getElementsByClassName("close")[1];
 let restartButton = document.getElementsByClassName("restart-button")[0];
 let symbolModal = document.getElementById("symbolModal");
 let computerButton = document.getElementById("computerButton");
@@ -12,6 +13,11 @@ window.onload = function() {
 }
 
 span.onclick = function() {
+    modal.style.display = "none";
+}
+
+spanOne.onclick = function() {
+    symbolModal.style.display = "none";
     modal.style.display = "none";
 }
 
@@ -28,5 +34,10 @@ computerButton.onclick = function() {
 }
 
 
+//Define player and computer objects
 
+const player1 = {
+    symbol: "X";
+    
+}
 
