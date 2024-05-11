@@ -12,6 +12,8 @@
     --footer-color: #ef8a85; 
     --text-color: #091013;
     --board-color: #dcd9d9;
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * .9);
 }
 
 
@@ -62,6 +64,13 @@ footer {
 .tile {
     border: 10px solid black;
     padding: 60px;
+    height: var(--cell-size);
+    width: var(--cell-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
 }
 
 
@@ -190,3 +199,49 @@ footer {
     border-bottom: none;
 }
 
+
+.tile.x::before,
+.tile.x::after,
+.game-board.x .tile:hover::before,
+.game-board.x .tile:hover::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+    background-color: black;
+}
+
+.tile.x::before,
+.game-board.x .tile:hover::before {
+    transform: rotate(45deg);
+}
+
+.tile.x::after,
+.game-board.x .tile:hover::after {
+    transform: rotate(-45deg);
+}
+
+.tile.circle::before,
+.tile.circle::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.tile.circle::before {
+    width: var(--mark-size);
+    height: var(--mark-size);
+    background-color: black;
+}
+
+
+.tile.circle::after {
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: var(--body-color);
+}
+
+.tile.x,
+.tile.circle {
+    cursor: not-allowed;
+}

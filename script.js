@@ -37,7 +37,5 @@ computerButton.onclick = function() {
 //Define player and computer objects
 
 const player1 = {
-    symbol: "X";
-    
 }
 
