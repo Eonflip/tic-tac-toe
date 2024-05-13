@@ -5,7 +5,12 @@ let restartButton = document.getElementsByClassName("restart-button")[0];
 let symbolModal = document.getElementById("symbolModal");
 let computerButton = document.getElementById("computerButton");
 let playerButton = document.getElementById("secondPlayer");
+const cellElements = document.querySelectorAll('[data-cell]')
 
+
+cellElements.forEach(cell => {
+    cell.addEventListener('click', handleClick, { once: true })
+})
 
 
 window.onload = function() {
@@ -36,6 +41,5 @@ computerButton.onclick = function() {
 
 //Define player and computer objects
 
-const player1 = {
-}
+
 
