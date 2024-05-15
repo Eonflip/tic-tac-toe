@@ -276,6 +276,7 @@ footer {
     color: white;
     font-size: 5rem;
     flex-direction: column;
+    z-index: 1;
 }
 
 .winning-message button {
