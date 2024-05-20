@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-Tac-Toe</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="./script.js" defer></script>
+    <script src="./script2.js" defer></script>
 </head>
 <body>
     <header>
@@ -13,20 +13,20 @@
     </header>
 
 
-    <div class="modal" id="myModal">
+    <div class="modal" id="opponentModal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="closeOpponentModal">&times;</span>
             <p>Select Opponent</p>
             <div class="player-buttons">
                 <button id="computerButton">Computer</button>
-                <button id="secondPlayer">2nd Player</button>
+                <button id="secondPlayerButton">2nd Player</button>
             </div>
         </div>
     </div>
 
     <div class="symbol-modal" id="symbolModal">
         <div class="symbol-modal-content">
-            <span class="close">&times;</span>
+            <span class="closeSymbolModal">&times;</span>
             <p>Select Your Symbol</p>
             <div class="player-symbols">
                 <button id="xButton">X</button>
@@ -51,7 +51,7 @@
         <div class="tile" data-cell></div>
         <div class="tile" data-cell></div>
     </div>
-    <button class="restart-button">Restart</button>
+    <button class="restart-button" id="midGameRestart">Select Opponent</button>
 
 
     <footer>

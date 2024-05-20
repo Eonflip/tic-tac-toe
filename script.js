@@ -1,138 +1,231 @@
-let modal = document.getElementById("myModal");
-let span = document.getElementsByClassName("close")[0];
-let spanOne = document.getElementsByClassName("close")[1];
-let restartButton = document.getElementsByClassName("restart-button")[0];
-let symbolModal = document.getElementById("symbolModal");
-let computerButton = document.getElementById("computerButton");
-let playerButton = document.getElementById("secondPlayer");
-const cellElements = document.querySelectorAll('[data-cell]');
-const board = document.getElementById('gameBoard');
-const winningMessageElement = document.getElementById('winningMessage');
-const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
-const endRestartButton = document.getElementById('restartButton');
-const X_CLASS = 'x'
-const CIRCLE_CLASS = 'circle'
-let circleTurn;
-const WINNING_COMBINATIONS = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-]
+const opponentChoice = {
+    opponent: null,
+    playerSymbol: 'X',
+    opponentSymbol: 'circle',
 
-startGame();
+    showOpponentModal() {
+        const opponentModal = document.getElementById('opponentModal');
+        opponentModal.style.display = 'block';
 
-endRestartButton.addEventListener('click', startGame);
+        document.getElementById('computerButton').onclick = () => {
+            this.opponent = aiPlayer;
+            opponentModal.style.display = 'none';
+            this.showSymbolModal();
+        };
 
-function startGame() {
-    circleTurn = false;
-    cellElements.forEach(tile => {
-        tile.classList.remove(X_CLASS);
-        tile.classList.remove(CIRCLE_CLASS);
-        tile.removeEventListener('click', handleClick);
-        tile.addEventListener('click', handleClick, { once: true })
-    })
-    setBoardHoverClass();
-    winningMessageElement.classList.remove('show');
-}
+        document.getElementById('secondPlayerButton').onclick = () => {
+            this.opponent = player2;
+            opponentModal.style.display = 'none';
+            this.showSymbolModal();
+        };
 
+        document.querySelector('.closeOpponentModal').onclick = () => {
+            opponentModal.style.display = 'none';
+        };
+    },
 
-function handleClick(e) {
-    const tile = e.target
-    const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
-    placeMark(tile, currentClass);
-    if (checkWin(currentClass)) {
-        endGame(false)
+    showSymbolModal() {
+        const symbolModal = document.getElementById('symbolModal');
+        symbolModal.style.display = 'block';
+
+        document.getElementById('xButton').onclick = () => {
+            this.playerSymbol = 'X';
+            this.opponentSymbol = 'circle';
+            symbolModal.style.display = 'none';
+            game.start();
+        };
+
+        document.getElementById('oButton').onclick = () => {
+            this.playerSymbol = 'circle';
+            this.opponentSymbol = 'X';
+            symbolModal.style.display = 'none';
+            game.start();
+        };
+
+        document.querySelector('.closeSymbolModal').onclick = () => {
+            symbolModal.style.display = 'none';
+        };
     }
-    else if (isDraw()) {
-        endGame(true);
-    }
-    else {
-        swapTurns();
-        setBoardHoverClass();
-    }
-    // placeMark
-    // Check for Win
-    // Check for Draw
-    // Switch Turns
+};
+
+
+
+function minimax(board, currentPlayer) {
+    const opponent = currentPlayer === aiPlayer.symbol ? player1.symbol : aiPlayer.symbol;
     
-}
-
-function isDraw() {
-    return [...cellElements].every(cell => {
-        return cell.classList.contains(X_CLASS) ||
-        cell.classList.contains(CIRCLE_CLASS);
-    })
-}
-
-function endGame(draw) {
-    if (draw) {
-        winningMessageTextElement.innerText = "Draw!";
-    } 
-    else {
-        winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins!`;
+    if (board.checkWin(aiPlayer.symbol)) {
+        return { score: 1 };
+    } else if (board.checkWin(player1.symbol)) {
+        return { score: -1 };
+    } else if (board.isDraw()) {
+        return { score: 0 };
     }
-    winningMessageElement.classList.add('show');
-}
 
-function placeMark(tile, currentClass) {
-    tile.classList.add(currentClass);
-}
+    const moves = [];
 
-function swapTurns() {
-    circleTurn = !circleTurn;
-}
+    board.tiles.forEach((tile, index) => {
+        if (tile === null) {
+            const move = { index: index };
+            board.placeMark(index, { symbol: currentPlayer });
 
-function setBoardHoverClass() {
-    board.classList.remove(X_CLASS);
-    board.classList.remove(CIRCLE_CLASS);
-    if (circleTurn) {
-        board.classList.add(CIRCLE_CLASS);
-    } 
-    else {
-        board.classList.add(X_CLASS);
+            const result = minimax(board, opponent);
+            move.score = result.score;
+
+            board.undoMark(index);
+            moves.push(move);
+        }
+    });
+
+    let bestMove;
+    if (currentPlayer === aiPlayer.symbol) {
+        let bestScore = -Infinity;
+        moves.forEach(move => {
+            if (move.score > bestScore) {
+                bestScore = move.score;
+                bestMove = move;
+            }
+        });
+    } else {
+        let bestScore = Infinity;
+        moves.forEach(move => {
+            if (move.score < bestScore) {
+                bestScore = move.score;
+                bestMove = move;
+            }
+        });
     }
+
+    return bestMove;
 }
 
-window.onload = function() {
-    modal.style.display = "block";
-}
+const gameBoard = {
+    tiles: Array(9).fill(null),
+    WINNING_COMBINATIONS: [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ],
+    resetBoard() {
+        this.tiles = Array(9).fill(null);
+    },
+    isDraw() {
+        return this.tiles.every(tile => tile !== null);
+    },
+    checkWin(currentClass) {
+        return this.WINNING_COMBINATIONS.some(combination => {
+            return combination.every(index => this.tiles[index] === currentClass);
+        });
+    },
+    placeMark(index, player) {
+        if (this.tiles[index] === null) {
+            this.tiles[index] = player.symbol;
+            return true;
+        }
+        return false;
+    },
+    undoMark(index) {
+        this.tiles[index] = null;
+    }
+};
 
-span.onclick = function() {
-    modal.style.display = "none";
-}
+const player1 = {
+    name: 'Player 1',
+    symbol: 'X',
+    makeMove(index) {
+        return gameBoard.placeMark(index, this);
+    }
+};
 
-spanOne.onclick = function() {
-    symbolModal.style.display = "none";
-    modal.style.display = "none";
-}
+const player2 = {
+    name: 'Player 2',
+    symbol: 'circle',
+    makeMove(index) {
+        return gameBoard.placeMark(index, this);
+    }
+};
 
-restartButton.onclick = function() {
-    modal.style.display = "block";
-    startGame();
-}
+const aiPlayer = {
+    name: 'Computer',
+    symbol: 'circle',
+    makeMove() {
+        const bestMove = minimax(gameBoard, this.symbol);
+        gameBoard.placeMark(bestMove.index, this);
+    }
+};
 
-playerButton.onclick = function() {
-    symbolModal.style.display = "block";
-}
+const game = {
+    currentPlayer: player1,
+    start() {
+        gameBoard.resetBoard();
+        player1.symbol = opponentChoice.playerSymbol;
+        if (opponentChoice.opponent === aiPlayer) {
+            aiPlayer.symbol = opponentChoice.opponentSymbol;
+        } else {
+            player2.symbol = opponentChoice.opponentSymbol;
+        }
+        this.currentPlayer = player1;
+        this.render();
+    },
+    handleClick(index) {
+        if (this.currentPlayer.makeMove(index)) {
+            if (gameBoard.checkWin(this.currentPlayer.symbol)) {
+                this.displayWinner(this.currentPlayer.name);
+            } else if (gameBoard.isDraw()) {
+                this.displayWinner('Draw');
+            } else {
+                this.swapTurns();
+            }
+            this.render();
+        }
+    },
+    swapTurns() {
+        this.currentPlayer = this.currentPlayer === player1 ? opponentChoice.opponent : player1;
+        if (this.currentPlayer === aiPlayer) {
+            aiPlayer.makeMove();
+            if (gameBoard.checkWin(aiPlayer.symbol)) {
+                this.displayWinner(aiPlayer.name);
+            } else if (gameBoard.isDraw()) {
+                this.displayWinner('Draw');
+            } else {
+                this.currentPlayer = player1;
+            }
+            this.render();
+        }
+    },
+    displayWinner(winner) {
+        const winningMessageElement = document.getElementById('winningMessage');
+        const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
+        winningMessageTextElement.innerText = winner === 'Draw' ? 'Draw!' : `${winner} Wins!`;
+        winningMessageElement.classList.add('show');
+    },
+    render() {
+        const tiles = document.querySelectorAll('.tile');
+        tiles.forEach((tile, index) => {
+            tile.classList.remove('x', 'circle');
+            if (gameBoard.tiles[index]) {
+                tile.classList.add(gameBoard.tiles[index].toLowerCase());
+            }
+        });
+    }
+};
 
-computerButton.onclick = function() {
-    symbolModal.style.display = "block";
-}
+document.querySelectorAll('.tile').forEach((tile, index) => {
+    tile.addEventListener('click', () => game.handleClick(index));
+});
 
-function checkWin(currentClass) {
-    return WINNING_COMBINATIONS.some(combination => {
-        return combination.every(index => {
-            return cellElements[index].classList.contains(currentClass);
-        })
-    })
-}
+document.getElementById('restartButton').addEventListener('click', () => {
+    document.getElementById('winningMessage').classList.remove('show');
+    opponentChoice.showOpponentModal();
+});
 
-//Define player and computer objects
+document.getElementById('midGameRestart').addEventListener('click', () => {
+    opponentChoice.showOpponentModal();
+})
 
-
-
+//game.start();
+opponentChoice.showOpponentModal();
