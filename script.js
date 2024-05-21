@@ -169,14 +169,20 @@ const game = {
             player2.symbol = opponentChoice.opponentSymbol;
         }
         this.currentPlayer = player1;
+        playerTurnText = document.querySelector('.player-turn-text');
+        playerTurnText.innerText = `${this.currentPlayer.name}'s Turn`;
         this.render();
     },
     handleClick(index) {
         if (this.currentPlayer.makeMove(index)) {
             if (gameBoard.checkWin(this.currentPlayer.symbol)) {
-                this.displayWinner(this.currentPlayer.name);
+                setTimeout(() => {
+                    this.displayWinner(this.currentPlayer.name);
+                }, 1000);
             } else if (gameBoard.isDraw()) {
-                this.displayWinner('Draw');
+                setTimeout(() => {
+                    this.displayWinner('Draw');
+                }, 1000);
             } else {
                 this.swapTurns();
             }
@@ -185,16 +191,27 @@ const game = {
     },
     swapTurns() {
         this.currentPlayer = this.currentPlayer === player1 ? opponentChoice.opponent : player1;
+        playerTurnText = document.querySelector('.player-turn-text');
+        playerTurnText.innerText = `${this.currentPlayer.name}'s Turn`;
+        this.render();
         if (this.currentPlayer === aiPlayer) {
-            aiPlayer.makeMove();
-            if (gameBoard.checkWin(aiPlayer.symbol)) {
-                this.displayWinner(aiPlayer.name);
-            } else if (gameBoard.isDraw()) {
-                this.displayWinner('Draw');
-            } else {
-                this.currentPlayer = player1;
-            }
-            this.render();
+            setTimeout(() => {
+                aiPlayer.makeMove();
+                if (gameBoard.checkWin(aiPlayer.symbol)) {
+                    setTimeout(() => {
+                        this.displayWinner(aiPlayer.name);
+                    }, 1000);
+                } else if (gameBoard.isDraw()) {
+                    setTimeout(() => {
+                        this.displayWinner('Draw');
+                    }, 1000);
+                } else {
+                    this.currentPlayer = player1;
+                    playerTurnText.innerText = `${this.currentPlayer.name}'s Turn`;
+                }
+                this.render();
+            }, 1000);
+
         }
     },
     displayWinner(winner) {
