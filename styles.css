@@ -57,7 +57,7 @@ footer {
     display: grid;
     grid-template-columns: repeat(3, 125px);
     grid-template-rows: repeat(3, 125px);
-    margin-top: 90px;
+    margin-top: 60px;
 }
 
 
@@ -310,4 +310,10 @@ footer {
 
 .winning-message.show {
     display: flex;
+}
+
+.player-turn-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
 }
